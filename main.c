@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+//TODO: Add more generators
+
 typedef struct solarPanel {
     char name[100];
     float length;
@@ -30,6 +32,8 @@ void addSP (SolarPanel* sp,char name[100], float length, float width, float powe
     sp->area = length*width;
 }
 
+//Make menu
+
 int main () {
     int one = 1;
     float area; //Luas daerah yang bisa dipakai
@@ -40,7 +44,7 @@ int main () {
     char name[100];
     float length;
     float width;
-    float power;
+    float power; //Kilowatt
     float price;
 
 
