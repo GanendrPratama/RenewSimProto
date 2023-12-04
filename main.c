@@ -14,26 +14,31 @@ typedef struct solarPanel {
 typedef struct waterTurbine {
     char name[100];
     float flowRate;
+    float area; 
     float power;
     float price;
 } WaterTurbine;
 
 void showSP(SolarPanel *sp, int index) {
-    printf("Solar panel #%d\n", index + 1);
+	printf("\n---------------------------------\n");
+    printf(" \n Solar panel #%d\n", index + 1);
     printf("%s\n", sp[index].name);
     printf("Length: %.2f\n", sp[index].length);
     printf("Width: %.2f\n", sp[index].width);
     printf("Area: %.2f\n", sp[index].area);
     printf("Power Generated: %.2f\n", sp[index].power);
     printf("Price: %.2f\n", sp[index].price);
+    printf("\n---------------------------------\n");
 }
 
 void showWT(WaterTurbine *wt, int index) {
-    printf("Water turbine #%d\n", index + 1);
+	printf("\n---------------------------------\n");
+    printf(" \n Water turbine #%d\n", index + 1);
     printf("%s\n", wt[index].name);
     printf("Flow Rate: %.2f\n", wt[index].flowRate);
     printf("Power Generated: %.2f\n", wt[index].power);
     printf("Price: %.2f\n", wt[index].price);
+    printf("\n---------------------------------\n");
 }
 
 void addSP(SolarPanel *sp, char name[100], float length, float width, float power, float price) {
@@ -50,6 +55,7 @@ void addWT(WaterTurbine *wt, char name[100], float flowRate, float power, float 
     wt->flowRate = flowRate;
     wt->power = power;
     wt->price = price;
+    wt->area = flowRate; // rumus area akan mempengaruhi flowratenya 
 }
 
 int main() {
@@ -68,7 +74,9 @@ int main() {
     float price;
     float flowRate;
 
+    printf("Enter the usable area: ");
     scanf("%f", &area);
+
     while (one == 1) {
         printf("Energy Needed: %f\n", needs);
         printf("Usable Area: %f\n", area);
@@ -84,31 +92,54 @@ int main() {
                 showWT(wt, i);
             }
         }
+
+        printf("\n Menu Options \n");
+        printf(" 1. Add Solar Panel \n");
+        printf(" 2. Add Water Turbine \n");
+        printf(" 0. EXIT \n");
+        printf(" Enter your choice: ");
+
         scanf("%d", &input);
+        
         switch (input) {
             case 1: {
-                scanf("%99[^\n]", name);
+                printf("\n Enter details for Solar Panel:\n");
+                printf("Name: ");
+                scanf(" %[^\n]", name);
+                printf("Length (in Meter): ");
                 scanf("%f", &length);
+                printf("Width (in Meter): ");
                 scanf("%f", &width);
+                printf("Power (in Kilowatt): ");
                 scanf("%f", &power);
+                printf("Price: ");
                 scanf("%f", &price);
+
                 addSP(sp, name, length, width, power, price);
                 spCounter++;
             } break;
             case 2: {
-                scanf("%99[^\n]", name);
+                printf(" \n Enter details for Water Turbine:\n");
+                printf("Name: ");
+                scanf(" %[^\n]", name);
+                printf("Flow Rate: ");
                 scanf("%f", &flowRate);
+                printf("Power (in Kilowatt): ");
                 scanf("%f", &power);
+                printf("Price: ");
                 scanf("%f", &price);
+
                 addWT(wt, name, flowRate, power, price);
                 wtCounter++;
             } break;
 
-            default:
+            case 0:
+            	one = 0;
                 break;
-        }
+}
     }
     free(sp);
     free(wt);
     return 0;
 }
+
