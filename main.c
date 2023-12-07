@@ -41,12 +41,13 @@ void showWindTurbine(object *wt, int index){
 }
 
 void addObj(object *obj, int index, char name[100], float area, float power, float price) {
-    strcpy(obj->name, name);
-    obj->index = index;
-    obj->area = area;
-    obj->power = power;
-    obj->price = price;
+    obj[index].index = index;
+    strcpy(obj[index].name, name);
+    obj[index].area = area;
+    obj[index].power = power;
+    obj[index].price = price;
 }
+
 
 void removeObj(object *obj, int index, int *sum) {
     if (index-1 == *sum) {
@@ -245,7 +246,7 @@ int main() {
                     if (input < 0) {
                         printf("Cancelling operation. \n");
                         break;
-                    } else if (input >= spCounter) {
+                    } else if (input > spCounter) {
                         printf("Index not found. \n");
                     } else {
                         removeObj(sp, input-1, &spCounter);
@@ -267,7 +268,7 @@ int main() {
                     if (input < 0) {
                         printf("Cancelling operation. \n");
                         break;
-                    } else if (input >= wtCounter) {
+                    } else if (input > wtCounter) {
                         printf("Index not found. \n");
                     } else {
                         removeObj(wt, input-1, &wtCounter);
@@ -289,7 +290,7 @@ int main() {
                     if (input < 0) {
                         printf("Cancelling operation. \n");
                         break;
-                    } else if (input >= wnCounter) {
+                    } else if (input > wnCounter) {
                         printf("Index not found. \n");
                     } else {
                         removeObj(wn, input-1, &wnCounter);
