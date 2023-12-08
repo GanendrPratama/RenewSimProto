@@ -10,6 +10,17 @@ typedef struct Object {
     float price;
 } object;
 
+typedef struct dayObject {
+    int index;
+    float energyNeeded;
+    float totalPower;
+    float spPower;
+    float wtPower;
+    float wnPower;
+    float spEff;
+    float wtEff;
+    float wnEff;
+} dayObject;
 
 void showSolarPanel(object *sp, int index) {
     printf("\n---------------------------------\n");
@@ -55,14 +66,27 @@ void removeObj(object *obj, int index, int *sum) {
     } else {
         for(int i = index; i < *sum; i++) {
             obj[i] = obj[i+1];
-            (*sum)--;
         }
+        (*sum)--;
     }
+}
+
+void showDay (dayObject *day, int index) {
+    printf("\n Day %d: \n", index + 1);
+    printf(" Energy needed              : %.2f kwd\n", day[index].energyNeeded);
+    printf(" Energy from solar panels   : %.2f kwd\n", day[index].spPower);
+    printf(" Energy from water turbines : %.2f kwd\n", day[index].wtPower);
+    printf(" Energy from wind turbines  : %.2f kwd\n", day[index].wnPower);
+    printf(" Total energy fullfilled    : %.2f kwd\n", day[index].totalPower);
+    printf("-----------------------------------------------------------------\n");
 }
 
 int main() {
     //The states of the simulator program
-    int one = 1;
+    int activeState = 1;
+    int menuState = 0;
+    int simState = 0;
+    int editState = 0;
 
     float usableArea; // Initial usable area
     float totalArea = 0; // Total area covered by added components
@@ -84,13 +108,22 @@ int main() {
     float wnPower = 0;
     totalPower = spPower + wtPower + wnPower;
 
+    float spEff = 0;
+    float wtEff = 0;
+    float wnEff = 0;
+
     //variables to temporarily store fields to be inserted
     int input = 0;
+    int index = 0;
     char name[100];
     float area;
     float power; // Kilowatt per hour
     float price; // in dollars
 
+    int totalDay = 0;
+    dayObject *simDay = calloc(1, sizeof(dayObject));
+
+    menuState = 1;
     printf("Enter the initial usable area in km squared: ");
     scanf("%f", &usableArea);
     printf("Enter the needed power in kwh: ");
@@ -98,223 +131,392 @@ int main() {
     printf("Enter the initial money you have in dollars: ");
     scanf("%f", &money);
 
-    while (one == 1) {
-        input = 0;
-        printf("Usable Area: %.2f\n", usableArea - totalArea);
-        printf("Needed Power: %.2f\n", needPower - totalPower);
-        printf("Money left: %.2f\n", money);
-        if (usableArea == 0) {
+    while (activeState == 1) {
+        while (menuState == 1) {
+            input = 0;
+            printf("Usable Area: %.2f\n", usableArea-totalArea);
+            printf("Needed Power: %.2f\n", needPower-totalPower);
+            printf("Money left: %.2f\n", money);
+            if (usableArea == 0) {
             printf("You have no more area to build!\n");
-        }
-        if (money == 0) {
+            }
+            if (money == 0) {
             printf("You have no more money to spend!\n");
-        }
-        if (needPower <= totalPower) {
+            }
+            if (needPower <= totalPower) {
             printf("You have fullfilled the energy needed!\n");
-        }
-        if (spCounter > 0) {
-            printf("Solar Panels:\n");
-            for (int i = 0; i < spCounter; i++) {
-                showSolarPanel(sp, i);
+            }
+            if (spCounter > 0) {
+                printf("Solar Panels:\n");
+                for (int i = 0; i < spCounter; i++) {
+                    showSolarPanel(sp, i);
             }
         }
-        if (wtCounter > 0) {
-            printf("Water Turbines:\n");
-            for (int i = 0; i < wtCounter; i++) {
-                showWaterTurbine(wt, i);
+            if (wtCounter > 0) {
+                printf("Water Turbines:\n");
+                for (int i = 0; i < wtCounter; i++) {
+                    showWaterTurbine(wt, i);
             }
         }
-        if (wnCounter > 0) {
-            printf("Wind Turbines:\n");
-            for (int i = 0; i < wnCounter; i++) {
-                showWindTurbine(wn, i);
+            if (wnCounter > 0) {
+                printf("Wind Turbines:\n");
+                for (int i = 0; i < wnCounter; i++) {
+                    showWindTurbine(wn, i);
             }
         }
 
-        printf("\n BUILD MENU \n");
-        printf(" 1. Add Solar Panel \n");
-        printf(" 2. Add Water Turbine \n");
-        printf(" 3. Add Wind Turbine \n");
-        printf(" 4. Remove Solar Panel \n");
-        printf(" 5. Remove Water Turbine \n");
-        printf(" 6. Remove Wind Turbine \n");
-        printf(" 9. show the current data \n");
-        printf(" 0. Done Input \n");
-        printf(" Enter your choice: ");
+            printf("\n BUILD MENU \n");
+            printf(" 1. Add Solar Panel \n");
+            printf(" 2. Add Water Turbine \n");
+            printf(" 3. Add Wind Turbine \n");
+            printf(" 4. Remove Solar Panel \n");
+            printf(" 5. Remove Water Turbine \n");
+            printf(" 6. Remove Wind Turbine \n");
+            printf(" 7. show the current data \n");
+            printf(" 9. Exit Simulation \n");
+            printf(" 0. Done Input \n");
+            printf(" Enter your choice: ");
 
-        scanf("%d", &input);
+            scanf("%d", &input);
         
-        switch (input) {
-            case 1: {
-                if (usableArea == 0 || money == 0) {
-                    printf("You cannot build more generators!\n");
-                    break;
-                } else {
-                    printf("\n Enter details for Solar Panel:\n");
-                    printf("Name: ");
-                    scanf(" %[^\n]", name);
-                    printf("Area (in Kilometer squared): ");
-                    scanf("%f", &area);
-                    printf("Power (in Kilowatt): ");
-                    scanf("%f", &power);
-                    printf("Price: ");
-                    scanf("%f", &price);
-
-                    if (usableArea - area <= 0) {
-                        printf("You have no more area to build!\n");
-                        break;
-                    } else if (money - price <= 0) {
-                        printf("You cannot afford this generator!\n");
+            switch (input) {
+                case 1: {
+                    if (usableArea == 0 || money == 0) {
+                        printf("You cannot build more generators!\n");
                         break;
                     } else {
-                        addObj(sp, spCounter, name, area, power, price);
-                        spPower += power;  
-                        totalArea += area;
-                        spCounter++;
+                        printf("\n Enter details for Solar Panel:\n");
+                        printf("Name: ");
+                        scanf(" %[^\n]", name);
+                        printf("Area (in Kilometer squared): ");
+                        scanf("%f", &area);
+                        printf("Power (in Kilowatt): ");
+                        scanf("%f", &power);
+                        printf("Price: ");
+                        scanf("%f", &price);
+
+                        if (usableArea - area <= 0) {
+                            printf("You have no more area to build!\n");
+                            break;
+                        } else if (money - price <= 0) {
+                            printf("You cannot afford this generator!\n");
+                            break;
+                        } else {
+                            addObj(sp, spCounter, name, area, power, price);
+                            spPower += power;
+                            needPower -= power;  
+                            usableArea -= area;
+                            money -= price;
+                            spCounter++;
+                        }
+                    } break;
+                } break;
+                case 2: {
+                    if (usableArea == 0 || money == 0) {
+                        printf("You cannot build more generators!\n");
+                        break;
+                    } else {
+                        printf("\n Enter details for Water Turbine:\n");
+                        printf("Name: ");
+                        scanf(" %[^\n]", name);
+                        printf("Area (in Kilometer squared): ");
+                        scanf("%f", &area);
+                        printf("Power (in Kilowatt): ");
+                        scanf("%f", &power);
+                        printf("Price: ");
+                        scanf("%f", &price);
+
+                        if (usableArea - area <= 0) {
+                            printf("You have no more area to build!\n");
+                            break;
+                        } else if (money - price <= 0) {
+                            printf("You cannot afford this generator!\n");
+                            break;
+                        } else {
+                            addObj(wt, wtCounter, name, area, power, price);
+                            wtPower += power;
+                            totalArea += area;
+                            money -= price;
+                            wtCounter++;
+                        }
+                    } break;
+                } break;
+                case 3: {
+                    if (usableArea == 0 || money == 0) {
+                        printf("You cannot build more generators!\n");
+                        break;
+                    } else {
+                        printf("\n Enter details for Wind Turbine:\n");
+                        printf("Name: ");
+                        scanf(" %[^\n]", name);
+                        printf("Area (in Kilometer squared): ");
+                        scanf("%f", &area);
+                        printf("Power (in Kilowatt): ");
+                        scanf("%f", &power);
+                        printf("Price: ");
+                        scanf("%f", &price);
+
+                        if (usableArea - area <= 0) {
+                            printf("You have no more area to build!\n");
+                            break;
+                        } else if (money - price <= 0) {
+                            printf("You cannot afford this generator!\n");
+                            break;
+                        } else {
+                            addObj(wn, wnCounter, name, area, power, price);
+                            wnPower += power;  
+                            totalArea += area;
+                            money -= price;
+                            wnCounter++;
+                        }
+                    } break;
+                } break;
+                case 4: {
+                    if (spCounter <= 0) {
+                        printf("You have no solar panels. \n");
+                        break;
+                    } else {
+                        for (int i = 0; i < spCounter; i++) {
+                            showSolarPanel(sp,i);
+                    }
+                        printf("Type the index of the solar panel to be removed: \n");
+                        printf("Please enter any minus integer to cancel deleting \n");
+                        scanf("%d", &input);
+                        if (input < 0) {
+                            printf("Cancelling operation. \n");
+                            break;
+                        } else if (input-1 >= spCounter) {
+                            printf("Index not found. \n");
+                        } else {
+                            spPower += sp[input-1].power;
+                            totalArea -= sp[input-1].area;
+                            totalPower -= sp[input-1].power;
+                            money += sp[input-1].price;
+                            removeObj(sp, input-1, &spCounter);
+                        }
                     }
                 } break;
-            } break;
-            case 2: {
-                if (usableArea == 0 || money == 0) {
-                    printf("You cannot build more generators!\n");
-                    break;
-                } else {
-                    printf("\n Enter details for Water Turbine:\n");
-                    printf("Name: ");
-                    scanf(" %[^\n]", name);
-                    printf("Area (in Kilometer squared): ");
-                    scanf("%f", &area);
-                    printf("Power (in Kilowatt): ");
-                    scanf("%f", &power);
-                    printf("Price: ");
-                    scanf("%f", &price);
 
-                    if (usableArea - area <= 0) {
-                        printf("You have no more area to build!\n");
-                        break;
-                    } else if (money - price <= 0) {
-                        printf("You cannot afford this generator!\n");
+                case 5: {
+                    if (wtCounter <= 0) {
+                        printf("You have no water turbine. \n");
                         break;
                     } else {
-                        addObj(wt, wtCounter, name, area, power, price);
-                        wtPower += power;  
-                        totalArea += area;
-                        wtCounter++;
+                        for (int i = 0; i < wtCounter; i++) {
+                            showWaterTurbine(wt,i);
+                        }
+                        printf("Type the index of the solar panel to be removed: \n");
+                        printf("Please enter any minus integer to cancel deleting \n");
+                        scanf("%d", &input);
+                        if (input < 0) {
+                            printf("Cancelling operation. \n");
+                            break;
+                        } else if (input-1 >= wtCounter) {
+                            printf("Index not found. \n");
+                        } else {
+                            wtPower += wt[input-1].power;
+                            totalArea -= wt[input-1].area;
+                            totalPower -= wt[input-1].power;
+                            money += wt[input-1].price;
+                            removeObj(wt, input-1, &wtCounter);
+                        }
                     }
                 } break;
-            } break;
-            case 3: {
-                if (usableArea == 0 || money == 0) {
-                    printf("You cannot build more generators!\n");
-                    break;
-                } else {
-                    printf("\n Enter details for Wind Turbine:\n");
-                    printf("Name: ");
-                    scanf(" %[^\n]", name);
-                    printf("Area (in Kilometer squared): ");
-                    scanf("%f", &area);
-                    printf("Power (in Kilowatt): ");
-                    scanf("%f", &power);
-                    printf("Price: ");
-                    scanf("%f", &price);
 
-                    if (usableArea - area <= 0) {
-                        printf("You have no more area to build!\n");
-                        break;
-                    } else if (money - price <= 0) {
-                        printf("You cannot afford this generator!\n");
+                case 6: {
+                    if (wnCounter <= 0) {
+                        printf("You have no wind turbine. \n");
                         break;
                     } else {
-                        addObj(wn, wnCounter, name, area, power, price);
-                        wnPower += power;  
-                        totalArea += area;
-                        wnCounter++;
+                        for (int i = 0; i < wnCounter; i++) {
+                            showWindTurbine(wn,i);
+                        }
+                        printf("Type the index of the solar panel to be removed: \n");
+                        printf("Please enter any minus integer to cancel deleting \n");
+                        scanf("%d", &input);
+                        if (input < 0) {
+                            printf("Cancelling operation. \n");
+                            break;
+                        } else if (input > wnCounter) {
+                            printf("Index not found. \n");
+                        } else {
+                            wnPower += wn[input-1].power;
+                            totalArea -= wn[input-1].area;
+                            totalPower -= wn[input-1].power;
+                            money += wn[input-1].price;
+                            removeObj(wn, input-1, &wnCounter);
+                        }
                     }
                 } break;
-            } break;
-            case 4: {
-                if (spCounter <= 0) {
-                    printf("You have no solar panels. \n");
+
+                case 7:{
+                    printf("-------------------");
+
+                    printf("\nCurrent Data:\n");
+                    printf("Energy Needed: %.2f KWh\n", needPower);
+                    printf("Usable Area: %.2f\n", usableArea);
+
+                    printf("------------------- \n \n");
                     break;
-                } else {
-                    for (int i = 0; i < spCounter; i++) {
-                        showSolarPanel(sp,i);
-                    }
-                    printf("Type the index of the solar panel to be removed: \n");
-                    printf("Please enter any minus integer to cancel deleting \n");
-                    scanf("%d", &input);
-                    if (input < 0) {
-                        printf("Cancelling operation. \n");
-                        break;
-                    } else if (input > spCounter) {
-                        printf("Index not found. \n");
-                    } else {
-                        removeObj(sp, input-1, &spCounter);
-                    }
                 }
-            }break;
-
-            case 5: {
-                if (wtCounter <= 0) {
-                    printf("You have no solar panels. \n");
-                    break;
-                } else {
-                    for (int i = 0; i < wtCounter; i++) {
-                        showWaterTurbine(wt,i);
-                    }
-                    printf("Type the index of the solar panel to be removed: \n");
-                    printf("Please enter any minus integer to cancel deleting \n");
-                    scanf("%d", &input);
-                    if (input < 0) {
-                        printf("Cancelling operation. \n");
-                        break;
-                    } else if (input > wtCounter) {
-                        printf("Index not found. \n");
-                    } else {
-                        removeObj(wt, input-1, &wtCounter);
-                    }
-                }
-            }break;
-
-            case 6: {
-                if (wnCounter <= 0) {
-                    printf("You have no solar panels. \n");
-                    break;
-                } else {
-                    for (int i = 0; i < wnCounter; i++) {
-                        showWindTurbine(wn,i);
-                    }
-                    printf("Type the index of the solar panel to be removed: \n");
-                    printf("Please enter any minus integer to cancel deleting \n");
-                    scanf("%d", &input);
-                    if (input < 0) {
-                        printf("Cancelling operation. \n");
-                        break;
-                    } else if (input > wnCounter) {
-                        printf("Index not found. \n");
-                    } else {
-                        removeObj(wn, input-1, &wnCounter);
-                    }
-                }
-            }break;
-
-            case 9:{
-                printf("-------------------");
-
-                printf("\nCurrent Data:\n");
-                printf("Energy Needed: %.2f KWh\n", needPower);
-                printf("Usable Area: %.2f\n", usableArea - totalArea);
-
-                printf("------------------- \n \n");
-                break;
+                case 9: {
+                    activeState++;
+                } break;
+                case 0:{
+                    menuState = 0;
+                    simState = 1;
+                } break;
+                
+                default:{
+                    printf("Please check your input again. \n");
+                } break;
             }
-            case 0:
-                one = 0;
-                break;
+        }
+        while (simState == 1) {
+            if (totalDay == 0) {
+                printf("Please enter how many days to be simulated: ");
+                scanf("%d", &totalDay);
+                realloc(simDay, totalDay * sizeof(dayObject));
+            } else {
+                for (int i = 0; i < totalDay; i++) {
+                    simDay[i].spEff = spEff;
+                    simDay[i].wtEff = wtEff;
+                    simDay[i].wnEff = wnEff; 
+                    simDay[i].spPower = spEff * 4.0 * spPower + 0.5 * spEff * 8.0 * spPower;
+                    simDay[i].wtPower = wtEff * 24.0 * wtPower;
+                    simDay[i].wnPower = wnEff * 24.0 * wnPower;
+                    simDay[i].totalPower = simDay[i].spPower + simDay[i].wtPower + simDay[i].wnPower;
+                }
+                for (int i = 0; i < totalDay; i++) {
+                    showDay(simDay,i);
+                }
+                printf("\n SIMULATOR MENU \n");
+                printf(" 1. Edit the simulation of a day. \n");
+                printf(" 2. Check the simulation of a day. \n");
+                printf(" 3. Return to Build Menu. \n");
+                printf(" 4. Exit the simulation. \n");
+                scanf("%f", &input);
+                switch (input) {
+                    case 1: {
+                        editState = 1;
+                        while (editState == 1) {
+                            printf("Please select the day to edit: ");
+                            scanf("%d", index + 1);
+                            printf("Please select which component to edit: \n");
+                            printf(" 1. Daylight intensity. \n");
+                            printf(" 2. Waterflow velocity. \n");
+                            printf(" 3. Windflow strength. \n");
+                            printf(" 4. Return to simulation. \n");
+                            scanf("%d", &input);
+                            switch (input) {
+                                case 1: {
+                                    printf("Please select the status of the component \n");
+                                    printf(" 1. Really Strong (100%% effectiveness) \n");
+                                    printf(" 2. Strong (75%% effectiveness) \n");
+                                    printf(" 3. Medium (50%% effectiveness) \n");
+                                    printf(" 4. Weak (25%% effectiveness) \n");
+                                    printf(" 5. No Sunlight (100%% effectiveness) \n");
+                                    scanf("%d", &input);
+                                    switch (input) {
+                                        case 1: {
+                                            simDay[index + 1].spEff = 1;
+                                        } break;
+                                        case 2: {
+                                            simDay[index + 1].spEff = 0.75;
+                                        } break;
+                                        case 3: {
+                                            simDay[index + 1].spEff = 0.5;
+                                        }
+                                        case 4: {
+                                            simDay[index + 1].spEff = 0.25;
+                                        } break;
+                                        case 5: {
+                                            simDay[index + 1].spEff = 0;
+                                        } break;
+                                    }
+                                } break;
+                                case 2: {
+                                    printf("Please select the status of the component \n");
+                                    printf(" 1. Really Strong (100%% effectiveness) \n");
+                                    printf(" 2. Strong (75%% effectiveness) \n");
+                                    printf(" 3. Medium (50%% effectiveness) \n");
+                                    printf(" 4. Weak (25%% effectiveness) \n");
+                                    printf(" 5. No Waterflow (100%% effectiveness) \n");
+                                    scanf("%d", &input);
+                                    switch (input) {
+                                        case 1: {
+                                            simDay[index + 1].wtEff = 1;
+                                        } break;
+                                        case 2: {
+                                            simDay[index + 1].wtEff = 0.75;
+                                        } break;
+                                        case 3: {
+                                            simDay[index + 1].wtEff = 0.5;
+                                        }
+                                        case 4: {
+                                            simDay[index + 1].wtEff = 0.25;
+                                        } break;
+                                        case 5: {
+                                            simDay[index + 1].wtEff = 0;
+                                        } break;
+                                    }
+                                } break;
+                                case 3: {
+                                    printf("Please select the status of the component \n");
+                                    printf(" 1. Really Strong (100%% effectiveness) \n");
+                                    printf(" 2. Strong (75%% effectiveness) \n");
+                                    printf(" 3. Medium (50%% effectiveness) \n");
+                                    printf(" 4. Weak (25%% effectiveness) \n");
+                                    printf(" 5. No Windflow (100%% effectiveness) \n");
+                                    scanf("%d", &input);
+                                    switch (input) {
+                                        case 1: {
+                                            simDay[index + 1].wnEff = 1;
+                                        } break;
+                                        case 2: {
+                                            simDay[index + 1].wnEff = 0.75;
+                                        } break;
+                                        case 3: {
+                                            simDay[index + 1].wnEff = 0.5;
+                                        }
+                                        case 4: {
+                                            simDay[index + 1].wnEff = 0.25;
+                                        } break;
+                                        case 5: {
+                                            simDay[index + 1].wnEff = 0;
+                                        } break;
+                                    }
+                                } break;
+                                case 4: {
+                                    editState = 0;
+                                } break;
+                            }
+                        }
+
+                    } break;
+                    case 2 : {
+                        printf("Please enter the day to check \n");
+                        scanf("%d", index+1);
+                        showDay(simDay, index);
+                    } break;
+                    case 3 : {
+                        simState == 0;
+                        menuState == 1;
+                    } break;
+                    case 4 : {
+                        activeState++;
+                    } break;
+                    default : {
+                        printf("Please check your input again. \n");
+                    } break;
+                }
+            }
         }
     }
     free(sp);
     free(wt);
     free(wn);
+    free(simDay);
+    return 0;
     return 0;
 }
