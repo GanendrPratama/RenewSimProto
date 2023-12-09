@@ -81,6 +81,13 @@ void showDay(dayObject *day, int index) {
     printf(" Total energy fulfilled          : %.2f kwd\n", day[index].totalPower);
     printf("-----------------------------------------------------------------\n");
 }
+void clearScreen() {
+  #ifdef _WIN32
+    system("cls");
+  #else
+    system("clear");
+  #endif
+}
 
 int main() {
     //The states of the simulator program
@@ -165,7 +172,7 @@ int main() {
                     showWindTurbine(wn, i);
             }
         }
-
+ clearScreen();
             printf("===============================\n" 
 			       "|                             |\n" 
 				   "|          BUILD MENU         |\n" 
@@ -388,6 +395,7 @@ int main() {
             if (totalDay == 0) {
                 printf("Please enter how many days to be simulated: ");
                 scanf("%d", &totalDay);
+		clearScreen();
                 simDay = realloc(simDay, totalDay * sizeof(dayObject));
             } else {
                 for (int i = 0; i < totalDay; i++) {
@@ -424,6 +432,7 @@ int main() {
                 printf("| 4. Exit the simulation.          |\n");
 		printf("====================================\n"); 
                 scanf("%d", &input);
+		clearScreen();
                 switch (input) {
                     case 1: {
                         editState = 1;
@@ -450,6 +459,7 @@ int main() {
                                     printf("| 6. Custom Sunlight effectiveness         |\n");
                                     printf("============================================\n");
                                     scanf("%d", &input); 
+				    clearScreen();
                                     switch (input) {
                                         case 1: {
                                             simDay[index + 1].spEff = 1;
@@ -483,6 +493,7 @@ int main() {
                                     printf(" 5. No Waterflow (100%% effectiveness) \n");
                                     printf(" 6. Custom power level effectiveness \n");
                                     scanf("%d", &input);
+				    clearScreen();
                                     switch (input) {
                                         case 1: {
                                             simDay[index + 1].ggEff = 1;
@@ -516,6 +527,7 @@ int main() {
                                     printf(" 5. No Windflow (100%% effectiveness) \n");
                                     printf(" 6. Custom Windflow effectiveness \n");
                                     scanf("%d", &input);
+				    clearScreen();
                                     switch (input) {
                                         case 1: {
                                             simDay[index + 1].wnEff = 1;
