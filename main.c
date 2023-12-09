@@ -432,13 +432,13 @@ int main() {
                 printf("| 4. Exit the simulation.          |\n");
 		printf("====================================\n"); 
                 scanf("%d", &input);
-		clearScreen();
                 switch (input) {
                     case 1: {
                         editState = 1;
                         while (editState == 1) {
                             printf("Please select the day to edit: ");
                             scanf("%d", &index + 1);
+			    clearScreen();
                             printf("======================================== \n");
                             printf("Please select which component to edit:   \n");
                             printf(" 1. Daylight intensity.                  \n");
@@ -447,6 +447,7 @@ int main() {
                             printf(" 4. Return to simulation.                \n");
                             printf("======================================== \n");
                             scanf("%d", &input);
+			    clearScreen();
                             switch (input) {
                                 case 1: {
                                     printf("============================================\n");
@@ -563,6 +564,7 @@ int main() {
                     case 2 : {
                         printf("Please enter the day to check \n");
                         scanf("%d", &index+1);
+			clearScreen();
                         showDay(simDay, index);
                     } break;
                     case 3 : {
