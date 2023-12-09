@@ -413,15 +413,16 @@ int main() {
                 for (int i = 0; i < totalDay; i++) {
                     showDay(simDay,i);
                 }
-                printf("==================================\n" 
-			           "|                                 |\n" 
-				       "|          SIMULATOR MENU         |\n" 
-				       "|                                 |\n" 
-				       "==================================\n");
-                printf("|1. Edit the simulation of a day. | \n");
-                printf("|2. Check the simulation of a day.| \n");
-                printf("|3. Return to Build Menu.         | \n");
-                printf("|4. Exit the simulation.          | \n");
+	       printf ("====================================\n" 
+		       "|                                  |\n" 
+		       "|          Simulator  Menu         |\n" 
+		       "|                                  |\n" 
+		       "====================================\n");
+                printf("| 1. Edit the simulation of a day. |\n");
+                printf("| 2. Check the simulation of a day.|\n");
+                printf("| 3. Return to Build Menu.         |\n");
+                printf("| 4. Exit the simulation.          |\n");
+		printf("====================================\n"); 
                 scanf("%d", &input);
                 switch (input) {
                     case 1: {
