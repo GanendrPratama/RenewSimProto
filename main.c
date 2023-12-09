@@ -166,17 +166,23 @@ int main() {
             }
         }
 
-            printf("\n BUILD MENU \n");
-            printf(" 1. Add Solar Panel \n");
-            printf(" 2. Add Geothermal Turbine \n");
-            printf(" 3. Add Wind Turbine \n");
-            printf(" 4. Remove Solar Panel \n");
-            printf(" 5. Remove Geothermal Turbine \n");
-            printf(" 6. Remove Wind Turbine \n");
-            printf(" 7. show the current data \n");
-            printf(" 9. Exit Simulation \n");
-            printf(" 0. Done Input \n");
-            printf(" Enter your choice: ");
+            printf("===============================\n" 
+			       "|                             |\n" 
+				   "|          BUILD MENU         |\n" 
+				   "|                             |\n" 
+				   "===============================\n");
+            printf("|1. Add Solar Panel           |\n");
+            printf("|2. Add Geothermal Turbine    |\n");
+            printf("|3. Add Wind Turbine          |\n");
+            printf("|4. Remove Solar Panel        |\n");
+            printf("|5. Remove Geothermal Turbine |\n");
+            printf("|6. Remove Wind Turbine       |\n");
+            printf("|7. Show the current data     |\n");
+            printf("|9. Exit Simulation           |\n");
+            printf("|0. Done Input                |\n");
+            printf("===============================\n"); 
+            printf("Enter your choice:");
+
 
             scanf("%d", &input);
         
