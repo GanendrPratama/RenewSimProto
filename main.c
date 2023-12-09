@@ -166,17 +166,22 @@ int main() {
             }
         }
 
-            printf("\n BUILD MENU \n");
-            printf(" 1. Add Solar Panel \n");
-            printf(" 2. Add Geothermal Turbine \n");
-            printf(" 3. Add Wind Turbine \n");
-            printf(" 4. Remove Solar Panel \n");
-            printf(" 5. Remove Geothermal Turbine \n");
-            printf(" 6. Remove Wind Turbine \n");
-            printf(" 7. show the current data \n");
-            printf(" 9. Exit Simulation \n");
-            printf(" 0. Done Input \n");
-            printf(" Enter your choice: ");
+            printf("===============================\n" 
+			       "|                             |\n" 
+				   "|          BUILD MENU         |\n" 
+				   "|                             |\n" 
+				   "===============================\n");
+            printf("|1. Add Solar Panel           |\n");
+            printf("|2. Add Geothermal Turbine    |\n");
+            printf("|3. Add Wind Turbine          |\n");
+            printf("|4. Remove Solar Panel        |\n");
+            printf("|5. Remove Geothermal Turbine |\n");
+            printf("|6. Remove Wind Turbine       |\n");
+            printf("|7. Show the current data     |\n");
+            printf("|9. Exit Simulation           |\n");
+            printf("|0. Done Input                |\n");
+            printf("===============================\n"); 
+            printf("Enter your choice:");
 
             scanf("%d", &input);
         
@@ -408,11 +413,15 @@ int main() {
                 for (int i = 0; i < totalDay; i++) {
                     showDay(simDay,i);
                 }
-                printf("\n SIMULATOR MENU \n");
-                printf(" 1. Edit the simulation of a day. \n");
-                printf(" 2. Check the simulation of a day. \n");
-                printf(" 3. Return to Build Menu. \n");
-                printf(" 4. Exit the simulation. \n");
+                printf("==================================\n" 
+			           "|                                 |\n" 
+				       "|          SIMULATOR MENU         |\n" 
+				       "|                                 |\n" 
+				       "==================================\n");
+                printf("|1. Edit the simulation of a day. | \n");
+                printf("|2. Check the simulation of a day.| \n");
+                printf("|3. Return to Build Menu.         | \n");
+                printf("|4. Exit the simulation.          | \n");
                 scanf("%d", &input);
                 switch (input) {
                     case 1: {
@@ -420,21 +429,25 @@ int main() {
                         while (editState == 1) {
                             printf("Please select the day to edit: ");
                             scanf("%d", &index + 1);
-                            printf("Please select which component to edit: \n");
-                            printf(" 1. Daylight intensity. \n");
-                            printf(" 2. Geothermal power level. \n");
-                            printf(" 3. Windflow strength. \n");
-                            printf(" 4. Return to simulation. \n");
+                            printf("======================================== \n");
+                            printf("Please select which component to edit:   \n");
+                            printf(" 1. Daylight intensity.                  \n");
+                            printf(" 2. Geothermal power level.              \n");
+                            printf(" 3. Windflow strength.                   \n");
+                            printf(" 4. Return to simulation.                \n");
+                            printf("======================================== \n");
                             scanf("%d", &input);
                             switch (input) {
                                 case 1: {
-                                    printf("Please select the status of the component \n");
-                                    printf(" 1. Really Strong (100%% effectiveness) \n");
-                                    printf(" 2. Strong (75%% effectiveness) \n");
-                                    printf(" 3. Medium (50%% effectiveness) \n");
-                                    printf(" 4. Weak (25%% effectiveness) \n");
-                                    printf(" 5. No Sunlight (100%% effectiveness) \n");
-                                    printf(" 6. Custom Sunlight effectiveness \n");
+                                    printf("============================================\n");
+                                    printf("|Please select the status of the component |\n");
+                                    printf("| 1. Really Strong (100%% effectiveness)   |\n");
+                                    printf("| 2. Strong (75%% effectiveness)           |\n");
+                                    printf("| 3. Medium (50%% effectiveness)           |\n");
+                                    printf("| 4. Weak (25%% effectiveness)             |\n");
+                                    printf("| 5. No Sunlight (100%% effectiveness)     |\n");
+                                    printf("| 6. Custom Sunlight effectiveness         |\n");
+                                    printf("============================================\n");
                                     scanf("%d", &input); 
                                     switch (input) {
                                         case 1: {
