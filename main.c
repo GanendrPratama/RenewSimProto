@@ -166,23 +166,17 @@ int main() {
             }
         }
 
-            printf("===============================\n" 
-		   "|                             |\n" 
-		   "|          BUILD MENU         |\n" 
-		   "|                             |\n" 
-		   "===============================\n");
-            printf("|1. Add Solar Panel           |\n");
-            printf("|2. Add Geothermal Turbine    |\n");
-            printf("|3. Add Wind Turbine          |\n");
-            printf("|4. Remove Solar Panel        |\n");
-            printf("|5. Remove Geothermal Turbine |\n");
-            printf("|6. Remove Wind Turbine       |\n");
-            printf("|7. Show the current data     |\n");
-            printf("|9. Exit Simulation           |\n");
-            printf("|0. Done Input                |\n");
-            printf("===============================\n"); 
-            printf("Enter your choice:");
-
+            printf("\n BUILD MENU \n");
+            printf(" 1. Add Solar Panel \n");
+            printf(" 2. Add Geothermal Turbine \n");
+            printf(" 3. Add Wind Turbine \n");
+            printf(" 4. Remove Solar Panel \n");
+            printf(" 5. Remove Geothermal Turbine \n");
+            printf(" 6. Remove Wind Turbine \n");
+            printf(" 7. show the current data \n");
+            printf(" 9. Exit Simulation \n");
+            printf(" 0. Done Input \n");
+            printf(" Enter your choice: ");
 
             scanf("%d", &input);
         
@@ -369,6 +363,9 @@ int main() {
                 case 9: {
                     activeState++;
                     editState = 0;
+                    simState = 0;
+                    menuState = 0;  // Update menuState if needed
+                    break;  // Add a break statement to exit the switch block
                 } break;
                 case 0:{
                     menuState = 0;
@@ -461,6 +458,7 @@ int main() {
                                             simDay[index + 1].spEff = input / 100.0;
                                         }break;
                                     }
+                                    editState = 444;
                                 } break;
                                 case 2: {
                                     printf("Please select the status of the component \n");
@@ -493,6 +491,7 @@ int main() {
                                            simDay[index + 1].ggEff = input / 100.0;
                                         }break;
                                     }
+                                    editState = 444;
                                 } break;
                                 case 3: {
                                     printf("Please select the status of the component \n");
@@ -512,9 +511,10 @@ int main() {
                                         } break;
                                         case 3: {
                                             simDay[index + 1].wnEff = 0.5;
-                                        }
+                                        } break;
                                         case 4: {
                                             simDay[index + 1].wnEff = 0.25;
+
                                         } break;
                                         case 5: {
                                             simDay[index + 1].wnEff = 0;
@@ -525,14 +525,15 @@ int main() {
                                             simDay[index + 1].wnEff = input / 100.0;
                                         }break;
                                     }
+                                    editState = 444;
                                 } break;
                                 case 4: {
                                     editState = 0;
                                 } break;
                             }
                         }
-
-                    } break;
+                        break;
+                    }
                     case 2 : {
                         printf("Please enter the day to check \n");
                         scanf("%d", &index+1);
@@ -541,9 +542,14 @@ int main() {
                     case 3 : {
                         simState = 0;
                         menuState = 1;
+                        editState = 0;
                     } break;
                     case 4 : {
                         activeState++;
+                        editState = 0;
+                    	simState = 0;
+                    	menuState = 0;  // Update menuState if needed
+                    break;  // Add a break statement to exit the switch block
                     } break;
                     default : {
                         printf("Please check your input again. \n");
