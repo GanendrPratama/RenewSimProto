@@ -167,10 +167,10 @@ int main() {
         }
 
             printf("===============================\n" 
-			       "|                             |\n" 
-				   "|          BUILD MENU         |\n" 
-				   "|                             |\n" 
-				   "===============================\n");
+		   "|                             |\n" 
+		   "|          BUILD MENU         |\n" 
+		   "|                             |\n" 
+		   "===============================\n");
             printf("|1. Add Solar Panel           |\n");
             printf("|2. Add Geothermal Turbine    |\n");
             printf("|3. Add Wind Turbine          |\n");
