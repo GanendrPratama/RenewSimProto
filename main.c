@@ -15,10 +15,10 @@ typedef struct dayObject {
     float energyNeeded;
     float totalPower;
     float spPower;
-    float wtPower;
+    float ggPower;
     float wnPower;
     float spEff;
-    float wtEff;
+    float ggEff;
     float wnEff;
 } dayObject;
 
@@ -32,12 +32,13 @@ void showSolarPanel(object *sp, int index) {
     printf("\n---------------------------------\n");
 }
 
-void showWaterTurbine(object *wt, int index) {
+void showGeothermalGenerator(object *gg, int index) {
     printf("\n---------------------------------\n");
-    printf(" \n Water turbine #%d\n", index + 1);
-    printf("%s\n", wt[index].name);
-    printf("Power Generated: %.2f\n", wt[index].power);
-    printf("Price: %.2f\n", wt[index].price);
+    printf(" \n Geothermal Generator #%d\n", index + 1);
+    printf("%s\n", gg[index].name);
+    printf("Area: %.2f\n", gg[index].area);
+    printf("Power Generated: %.2f\n", gg[index].power);
+    printf("Price: %.2f\n", gg[index].price);
     printf("\n---------------------------------\n");
 }
 
@@ -71,22 +72,22 @@ void removeObj(object *obj, int index, int *sum) {
     }
 }
 
-void showDay (dayObject *day, int index) {
+void showDay(dayObject *day, int index) {
     printf("\n Day %d: \n", index + 1);
-    printf(" Energy needed              : %.2f kwd\n", day[index].energyNeeded);
-    printf(" Energy from solar panels   : %.2f kwd\n", day[index].spPower);
-    printf(" Energy from water turbines : %.2f kwd\n", day[index].wtPower);
-    printf(" Energy from wind turbines  : %.2f kwd\n", day[index].wnPower);
-    printf(" Total energy fullfilled    : %.2f kwd\n", day[index].totalPower);
+    printf(" Energy needed                   : %.2f kwd\n", day[index].energyNeeded);
+    printf(" Energy from solar panels        : %.2f kwd\n", day[index].spPower);
+    printf(" Energy from Geothermal turbines : %.2f kwd\n", day[index].ggPower);
+    printf(" Energy from wind turbines       : %.2f kwd\n", day[index].wnPower);
+    printf(" Total energy fulfilled          : %.2f kwd\n", day[index].totalPower);
     printf("-----------------------------------------------------------------\n");
 }
 
 int main() {
     //The states of the simulator program
     int activeState = 1;
-    int menuState = 0;
-    int simState = 0;
-    int editState = 0;
+    int menuState = 0; // menu
+    int simState = 0; // simulator
+    int editState = 0; //edit state
 
     float usableArea; // Initial usable area
     float totalArea = 0; // Total area covered by added components
@@ -96,21 +97,21 @@ int main() {
 
     //The generators that are available in this program
     object *sp = calloc(100, sizeof(object));
-    object *wt = calloc(100, sizeof(object));
+    object *gg = calloc(100, sizeof(object));
     object *wn = calloc(100, sizeof(object));
 
     int spCounter = 0;
-    int wtCounter = 0;
+    int ggCounter = 0;
     int wnCounter = 0;
 
     float spPower = 0;
-    float wtPower = 0;
+    float ggPower = 0;
     float wnPower = 0;
-    totalPower = spPower + wtPower + wnPower;
+    totalPower = spPower + ggPower + wnPower;
 
-    float spEff = 0;
-    float wtEff = 0;
-    float wnEff = 0;
+    float spEff = 1.0;
+    float ggEff = 1.0;
+    float wnEff = 1.0;
 
     //variables to temporarily store fields to be inserted
     int input = 0;
@@ -152,10 +153,10 @@ int main() {
                     showSolarPanel(sp, i);
             }
         }
-            if (wtCounter > 0) {
-                printf("Water Turbines:\n");
-                for (int i = 0; i < wtCounter; i++) {
-                    showWaterTurbine(wt, i);
+            if (ggCounter > 0) {
+                printf("Geothermal Turbines:\n");
+                for (int i = 0; i < ggCounter; i++) {
+                    showGeothermalGenerator(gg, i);
             }
         }
             if (wnCounter > 0) {
@@ -167,10 +168,10 @@ int main() {
 
             printf("\n BUILD MENU \n");
             printf(" 1. Add Solar Panel \n");
-            printf(" 2. Add Water Turbine \n");
+            printf(" 2. Add Geothermal Turbine \n");
             printf(" 3. Add Wind Turbine \n");
             printf(" 4. Remove Solar Panel \n");
-            printf(" 5. Remove Water Turbine \n");
+            printf(" 5. Remove Geothermal Turbine \n");
             printf(" 6. Remove Wind Turbine \n");
             printf(" 7. show the current data \n");
             printf(" 9. Exit Simulation \n");
@@ -216,7 +217,7 @@ int main() {
                         printf("You cannot build more generators!\n");
                         break;
                     } else {
-                        printf("\n Enter details for Water Turbine:\n");
+                        printf("\n Enter details for Geothermal Turbine:\n");
                         printf("Name: ");
                         scanf(" %[^\n]", name);
                         printf("Area (in Kilometer squared): ");
@@ -233,11 +234,11 @@ int main() {
                             printf("You cannot afford this generator!\n");
                             break;
                         } else {
-                            addObj(wt, wtCounter, name, area, power, price);
-                            wtPower += power;
+                            addObj(gg, ggCounter, name, area, power, price);
+                            ggPower += power;
                             totalArea += area;
                             money -= price;
-                            wtCounter++;
+                            ggCounter++;
                         }
                     } break;
                 } break;
@@ -298,27 +299,27 @@ int main() {
                 } break;
 
                 case 5: {
-                    if (wtCounter <= 0) {
-                        printf("You have no water turbine. \n");
+                    if (ggCounter <= 0) {
+                        printf("You have no Geothermal turbine. \n");
                         break;
                     } else {
-                        for (int i = 0; i < wtCounter; i++) {
-                            showWaterTurbine(wt,i);
+                        for (int i = 0; i < ggCounter; i++) {
+                            showGeothermalGenerator(gg,i);
                         }
-                        printf("Type the index of the solar panel to be removed: \n");
+                        printf("Type the index of the Geothermal turbines to be removed: \n");
                         printf("Please enter any minus integer to cancel deleting \n");
                         scanf("%d", &input);
                         if (input < 0) {
                             printf("Cancelling operation. \n");
                             break;
-                        } else if (input-1 >= wtCounter) {
+                        } else if (input-1 >= ggCounter) {
                             printf("Index not found. \n");
                         } else {
-                            wtPower += wt[input-1].power;
-                            totalArea -= wt[input-1].area;
-                            totalPower -= wt[input-1].power;
-                            money += wt[input-1].price;
-                            removeObj(wt, input-1, &wtCounter);
+                            ggPower += gg[input-1].power;
+                            totalArea -= gg[input-1].area;
+                            totalPower -= gg[input-1].power;
+                            money += gg[input-1].price;
+                            removeObj(gg, input-1, &ggCounter);
                         }
                     }
                 } break;
@@ -361,10 +362,12 @@ int main() {
                 }
                 case 9: {
                     activeState++;
+                    editState = 0;
                 } break;
                 case 0:{
                     menuState = 0;
                     simState = 1;
+                    editState = 0;
                 } break;
                 
                 default:{
@@ -372,21 +375,33 @@ int main() {
                 } break;
             }
         }
+        //simulator menu activated
         while (simState == 1) {
             if (totalDay == 0) {
                 printf("Please enter how many days to be simulated: ");
                 scanf("%d", &totalDay);
-                realloc(simDay, totalDay * sizeof(dayObject));
+                simDay = realloc(simDay, totalDay * sizeof(dayObject));
             } else {
                 for (int i = 0; i < totalDay; i++) {
                     simDay[i].spEff = spEff;
-                    simDay[i].wtEff = wtEff;
+                    simDay[i].ggEff = ggEff;
                     simDay[i].wnEff = wnEff; 
-                    simDay[i].spPower = spEff * 4.0 * spPower + 0.5 * spEff * 8.0 * spPower;
-                    simDay[i].wtPower = wtEff * 24.0 * wtPower;
-                    simDay[i].wnPower = wnEff * 24.0 * wnPower;
-                    simDay[i].totalPower = simDay[i].spPower + simDay[i].wtPower + simDay[i].wnPower;
+
+                    // Reset the energyNeeded for each day
+                    simDay[i].energyNeeded = needPower;
+
+                    // Calculate the power generated by each generator
+                    simDay[i].spPower = simDay[i].spEff * 4.0 * spPower + 0.5 * simDay[i].spEff * 8.0 * spPower;
+                    simDay[i].ggPower = simDay[i].ggEff * 24.0 * ggPower;
+                    simDay[i].wnPower = simDay[i].wnEff * 24.0 * wnPower;
+
+                    // Subtract the generated power from energyNeeded
+                    simDay[i].energyNeeded -= simDay[i].spPower + simDay[i].ggPower + simDay[i].wnPower;
+
+                    // Update the totalPower for the day
+                    simDay[i].totalPower = simDay[i].spPower + simDay[i].ggPower + simDay[i].wnPower;
                 }
+
                 for (int i = 0; i < totalDay; i++) {
                     showDay(simDay,i);
                 }
@@ -395,16 +410,16 @@ int main() {
                 printf(" 2. Check the simulation of a day. \n");
                 printf(" 3. Return to Build Menu. \n");
                 printf(" 4. Exit the simulation. \n");
-                scanf("%f", &input);
+                scanf("%d", &input);
                 switch (input) {
                     case 1: {
                         editState = 1;
                         while (editState == 1) {
                             printf("Please select the day to edit: ");
-                            scanf("%d", index + 1);
+                            scanf("%d", &index + 1);
                             printf("Please select which component to edit: \n");
                             printf(" 1. Daylight intensity. \n");
-                            printf(" 2. Waterflow velocity. \n");
+                            printf(" 2. Geothermal power level. \n");
                             printf(" 3. Windflow strength. \n");
                             printf(" 4. Return to simulation. \n");
                             scanf("%d", &input);
@@ -416,7 +431,8 @@ int main() {
                                     printf(" 3. Medium (50%% effectiveness) \n");
                                     printf(" 4. Weak (25%% effectiveness) \n");
                                     printf(" 5. No Sunlight (100%% effectiveness) \n");
-                                    scanf("%d", &input);
+                                    printf(" 6. Custom Sunlight effectiveness \n");
+                                    scanf("%d", &input); 
                                     switch (input) {
                                         case 1: {
                                             simDay[index + 1].spEff = 1;
@@ -433,6 +449,11 @@ int main() {
                                         case 5: {
                                             simDay[index + 1].spEff = 0;
                                         } break;
+                                        case 6: {
+                                            printf("Please enter the custom effectiveness percentage for Daylight intensity (0-100): ");
+                                            scanf("%f", &input);
+                                            simDay[index + 1].spEff = input / 100.0;
+                                        }break;
                                     }
                                 } break;
                                 case 2: {
@@ -442,23 +463,29 @@ int main() {
                                     printf(" 3. Medium (50%% effectiveness) \n");
                                     printf(" 4. Weak (25%% effectiveness) \n");
                                     printf(" 5. No Waterflow (100%% effectiveness) \n");
+                                    printf(" 6. Custom power level effectiveness \n");
                                     scanf("%d", &input);
                                     switch (input) {
                                         case 1: {
-                                            simDay[index + 1].wtEff = 1;
+                                            simDay[index + 1].ggEff = 1;
                                         } break;
                                         case 2: {
-                                            simDay[index + 1].wtEff = 0.75;
+                                            simDay[index + 1].ggEff = 0.75;
                                         } break;
                                         case 3: {
-                                            simDay[index + 1].wtEff = 0.5;
+                                            simDay[index + 1].ggEff = 0.5;
                                         }
                                         case 4: {
-                                            simDay[index + 1].wtEff = 0.25;
+                                            simDay[index + 1].ggEff = 0.25;
                                         } break;
                                         case 5: {
-                                            simDay[index + 1].wtEff = 0;
+                                            simDay[index + 1].ggEff = 0;
                                         } break;
+                                        case 6: {
+                                           printf("Please enter the custom effectiveness percentage for Waterflow velocity (0-100): ");
+                                           scanf("%f", &input);
+                                           simDay[index + 1].ggEff = input / 100.0;
+                                        }break;
                                     }
                                 } break;
                                 case 3: {
@@ -468,6 +495,7 @@ int main() {
                                     printf(" 3. Medium (50%% effectiveness) \n");
                                     printf(" 4. Weak (25%% effectiveness) \n");
                                     printf(" 5. No Windflow (100%% effectiveness) \n");
+                                    printf(" 6. Custom Windflow effectiveness \n");
                                     scanf("%d", &input);
                                     switch (input) {
                                         case 1: {
@@ -485,6 +513,11 @@ int main() {
                                         case 5: {
                                             simDay[index + 1].wnEff = 0;
                                         } break;
+                                        case 6: {
+                                            printf("Please enter the custom effectiveness percentage for Windflow strength (0-100): ");
+                                            scanf("%f", &input);
+                                            simDay[index + 1].wnEff = input / 100.0;
+                                        }break;
                                     }
                                 } break;
                                 case 4: {
@@ -496,12 +529,12 @@ int main() {
                     } break;
                     case 2 : {
                         printf("Please enter the day to check \n");
-                        scanf("%d", index+1);
+                        scanf("%d", &index+1);
                         showDay(simDay, index);
                     } break;
                     case 3 : {
-                        simState == 0;
-                        menuState == 1;
+                        simState = 0;
+                        menuState = 1;
                     } break;
                     case 4 : {
                         activeState++;
@@ -514,9 +547,8 @@ int main() {
         }
     }
     free(sp);
-    free(wt);
+    free(gg);
     free(wn);
     free(simDay);
-    return 0;
     return 0;
 }
