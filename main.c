@@ -191,9 +191,8 @@ int main() {
             printf("|0. Done Input                |\n");
             printf("===============================\n"); 
             printf("Enter your choice:");
-
             scanf("%d", &input);
-        
+            clearScreen();
             switch (input) {
                 case 1: {
                     if (usableArea == 0 || money == 0) {
@@ -224,6 +223,7 @@ int main() {
                             money -= price;
                             spCounter++;
                         }
+                        clearScreen();
                     } break;
                 } break;
                 case 2: {
@@ -254,6 +254,7 @@ int main() {
                             money -= price;
                             ggCounter++;
                         }
+                        clearScreen();
                     } break;
                 } break;
                 case 3: {
@@ -284,6 +285,7 @@ int main() {
                             money -= price;
                             wnCounter++;
                         }
+                        clearScreen();
                     } break;
                 } break;
                 case 4: {
@@ -310,8 +312,8 @@ int main() {
                             removeObj(sp, input-1, &spCounter);
                         }
                     }
+                    clearScreen();
                 } break;
-
                 case 5: {
                     if (ggCounter <= 0) {
                         printf("You have no Geothermal turbine. \n");
@@ -336,8 +338,8 @@ int main() {
                             removeObj(gg, input-1, &ggCounter);
                         }
                     }
+                    clearScreen();
                 } break;
-
                 case 6: {
                     if (wnCounter <= 0) {
                         printf("You have no wind turbine. \n");
@@ -362,8 +364,8 @@ int main() {
                             removeObj(wn, input-1, &wnCounter);
                         }
                     }
+                    clearScreen();
                 } break;
-
                 case 7:{
                     printf("-------------------");
 
@@ -392,6 +394,7 @@ int main() {
                 } break;
             }
         }
+		clearScreen();
         //simulator menu activated
         while (simState == 1) {
             if (totalDay == 0) {
@@ -438,7 +441,7 @@ int main() {
                         while (editState == 1) {
                             printf("Please select the day to edit: ");
                             scanf("%d", &index);
-
+							clearScreen();
                             printf("======================================== \n");
                             printf("Please select which component to edit:   \n");
                             printf(" 1. Daylight intensity.                  \n");
@@ -447,7 +450,7 @@ int main() {
                             printf(" 4. Return to simulation.                \n");
                             printf("======================================== \n");
                             scanf("%d", &input);
-
+							clearScreen();
                             switch (input) {
                                 case 1: {
                                     printf("============================================\n");
@@ -460,7 +463,7 @@ int main() {
                                     printf("| 6. Custom Sunlight effectiveness         |\n");
                                     printf("============================================\n");
                                     scanf("%d", &input); 
-
+									clearScreen();
                                     switch (input) {
                                         case 1: {
                                             simDay[index - 1].spEff = 1;
@@ -512,7 +515,7 @@ int main() {
                                     printf(" 5. No Waterflow (0%% effectiveness) \n");
                                     printf(" 6. Custom power level effectiveness \n");
                                     scanf("%d", &input);
-
+									clearScreen();
                                     switch (input) {
                                         case 1: {
                                             simDay[index - 1].ggEff = 1;
@@ -564,7 +567,7 @@ int main() {
                                     printf(" 5. No Windflow (0%% effectiveness) \n");
                                     printf(" 6. Custom Windflow effectiveness \n");
                                     scanf("%d", &input);
-
+									clearScreen();
                                     switch (input) {
                                         case 1: {
                                             simDay[index - 1].wnEff = 1;
