@@ -93,22 +93,19 @@ void clearScreen() {
 
 void welcome(){
 	int i;//deklarasi variabel integer
-	printf("\t\t\t\t!--- Mulai SIMULATOR menekan Fullscreen lalu ENTER ---!");
+	printf("\t\t\t\t\t!--- Mulai SIMULATOR menekan Fullscreen lalu ENTER ---!");
 	getchar();//memanggil function getchar
 	system("CLS");//Membersihkan layar
 	Sleep(100);//menjeda program selama 1 detik
 	system("color 9F") ;
 	printf("\n\n\n\n\n\n\n");
-	char a[]= { "\t\t\t\t\t\t\t\t======================================\n"
-				"\t\t\t\t\t\t\t\t|---- Selamat Datang di Simulator ----|\n"
-			    "\t\t\t\t\t\t\t\t|-------- Pembangkit Listrik ---------|\n"
-			    "\t\t\t\t\t\t\t\t|------------ Kelompok 5 -------------|\n"
-			    "\t\t\t\t\t\t\t\t|------- Pemrograman Dasar 01 --------|\n"
-			   	"\t\t\t\t\t\t\t\t======================================\n\n"};	
-	for(i=0;a[i]!=a[283];i++){ 
-		printf("%c",a[i]); 
-		Sleep(5); 
-	}
+	printf("\t\t\t\t\t\t\t\t=======================================\n");
+				printf("\t\t\t\t\t\t\t\t|---- Selamat Datang di Simulator ----|\n");
+			    printf("\t\t\t\t\t\t\t\t|-------- Pembangkit Listrik ---------|\n");
+			    printf("\t\t\t\t\t\t\t\t|------------ Kelompok 5 -------------|\n");
+			    printf("\t\t\t\t\t\t\t\t|------- Pemrograman Dasar 01 --------|\n");
+			   	printf("\t\t\t\t\t\t\t\t=======================================\n\n");
+	
 	printf("Loading... \n\n");
 	Beep(659,400);
 	Sleep(800);//menjeda program selama 0.8 detik
@@ -244,7 +241,7 @@ int main() {
                         printf("You cannot build more generators!\n");
                         break;
                     } else {
-                        printf("\n Enter details for Solar Panel:\n");
+                        printf("\nEnter details for Solar Panel:\n");
                         printf("Name: ");
                         scanf(" %[^\n]", name);
                         printf("Area (in Kilometer squared): ");
@@ -276,7 +273,7 @@ int main() {
                         printf("You cannot build more generators!\n");
                         break;
                     } else {
-                        printf("\n Enter details for Geothermal Turbine:\n");
+                        printf("\nEnter details for Geothermal Turbine:\n");
                         printf("Name: ");
                         scanf(" %[^\n]", name);
                         printf("Area (in Kilometer squared): ");
@@ -307,7 +304,7 @@ int main() {
                         printf("You cannot build more generators!\n");
                         break;
                     } else {
-                        printf("\n Enter details for Wind Turbine:\n");
+                        printf("\nEnter details for Wind Turbine:\n");
                         printf("Name: ");
                         scanf(" %[^\n]", name);
                         printf("Area (in Kilometer squared): ");
