@@ -81,6 +81,8 @@ void showDay(dayObject *day, int index) {
     printf(" Total energy fulfilled          : %.2f kwd\n", day[index].totalPower);
     printf("-----------------------------------------------------------------\n");
 }
+
+
 void clearScreen() {
   #ifdef _WIN32
     system("cls");
@@ -129,6 +131,7 @@ int main() {
     float price; // in dollars
 
     int totalDay = 0;
+    float cstmInput = 0.0;
     dayObject *simDay = calloc(1, sizeof(dayObject));
 
     menuState = 1;
@@ -172,12 +175,11 @@ int main() {
                     showWindTurbine(wn, i);
             }
         }
- clearScreen();
-            printf("===============================\n" 
-		   "|                             |\n" 
-		   "|          BUILD MENU         |\n" 
-		   "|                             |\n" 
-		   "===============================\n");
+            printf("===============================\n"); 
+		    printf("|                             |\n" );
+		    printf("|          BUILD MENU         |\n" );
+		    printf("|                             |\n" );
+		    printf("===============================\n");
             printf("|1. Add Solar Panel           |\n");
             printf("|2. Add Geothermal Turbine    |\n");
             printf("|3. Add Wind Turbine          |\n");
@@ -208,10 +210,10 @@ int main() {
                         printf("Price: ");
                         scanf("%f", &price);
 
-                        if (usableArea - area <= 0) {
+                        if (usableArea - area < 0) {
                             printf("You have no more area to build!\n");
                             break;
-                        } else if (money - price <= 0) {
+                        } else if (money - price < 0) {
                             printf("You cannot afford this generator!\n");
                             break;
                         } else {
@@ -239,10 +241,10 @@ int main() {
                         printf("Price: ");
                         scanf("%f", &price);
 
-                        if (usableArea - area <= 0) {
+                        if (usableArea - area < 0) {
                             printf("You have no more area to build!\n");
                             break;
-                        } else if (money - price <= 0) {
+                        } else if (money - price < 0) {
                             printf("You cannot afford this generator!\n");
                             break;
                         } else {
@@ -395,13 +397,11 @@ int main() {
             if (totalDay == 0) {
                 printf("Please enter how many days to be simulated: ");
                 scanf("%d", &totalDay);
-		clearScreen();
                 simDay = realloc(simDay, totalDay * sizeof(dayObject));
-            } else {
                 for (int i = 0; i < totalDay; i++) {
-                    simDay[i].spEff = spEff;
-                    simDay[i].ggEff = ggEff;
-                    simDay[i].wnEff = wnEff; 
+                    simDay[i].spEff = 1.0;
+                    simDay[i].ggEff = 1.0;
+                    simDay[i].wnEff = 1.0; 
 
                     // Reset the energyNeeded for each day
                     simDay[i].energyNeeded = needPower;
@@ -417,15 +417,15 @@ int main() {
                     // Update the totalPower for the day
                     simDay[i].totalPower = simDay[i].spPower + simDay[i].ggPower + simDay[i].wnPower;
                 }
-
+            } else {
                 for (int i = 0; i < totalDay; i++) {
                     showDay(simDay,i);
                 }
-	       printf ("====================================\n" 
-		       "|                                  |\n" 
-		       "|          Simulator  Menu         |\n" 
-		       "|                                  |\n" 
-		       "====================================\n");
+	        printf ("====================================\n");
+		    printf("|                                  |\n"); 
+		    printf("|          Simulator  Menu         |\n"); 
+		    printf("|                                  |\n"); 
+		    printf("====================================\n");
                 printf("| 1. Edit the simulation of a day. |\n");
                 printf("| 2. Check the simulation of a day.|\n");
                 printf("| 3. Return to Build Menu.         |\n");
@@ -437,8 +437,8 @@ int main() {
                         editState = 1;
                         while (editState == 1) {
                             printf("Please select the day to edit: ");
-                            scanf("%d", &index + 1);
-			    clearScreen();
+                            scanf("%d", &index);
+
                             printf("======================================== \n");
                             printf("Please select which component to edit:   \n");
                             printf(" 1. Daylight intensity.                  \n");
@@ -447,7 +447,7 @@ int main() {
                             printf(" 4. Return to simulation.                \n");
                             printf("======================================== \n");
                             scanf("%d", &input);
-			    clearScreen();
+
                             switch (input) {
                                 case 1: {
                                     printf("============================================\n");
@@ -456,31 +456,37 @@ int main() {
                                     printf("| 2. Strong (75%% effectiveness)           |\n");
                                     printf("| 3. Medium (50%% effectiveness)           |\n");
                                     printf("| 4. Weak (25%% effectiveness)             |\n");
-                                    printf("| 5. No Sunlight (100%% effectiveness)     |\n");
+                                    printf("| 5. No Sunlight (0%% effectiveness)     |\n");
                                     printf("| 6. Custom Sunlight effectiveness         |\n");
                                     printf("============================================\n");
                                     scanf("%d", &input); 
-				    clearScreen();
+
                                     switch (input) {
                                         case 1: {
-                                            simDay[index + 1].spEff = 1;
+                                            simDay[index - 1].spEff = 1;
+                                            simDay[index -1].spPower = spPower * simDay[index - 1].spEff;
                                         } break;
                                         case 2: {
-                                            simDay[index + 1].spEff = 0.75;
+                                            simDay[index - 1].spEff = 0.75;
+                                            simDay[index -1].spPower = spPower * simDay[index - 1].spEff;
                                         } break;
                                         case 3: {
-                                            simDay[index + 1].spEff = 0.5;
+                                            simDay[index - 1].spEff = 0.5;
+                                            simDay[index -1].spPower = spPower * simDay[index - 1].spEff;
                                         }
                                         case 4: {
-                                            simDay[index + 1].spEff = 0.25;
+                                            simDay[index - 1].spEff = 0.25;
+                                            simDay[index -1].spPower = spPower * simDay[index - 1].spEff;
                                         } break;
                                         case 5: {
-                                            simDay[index + 1].spEff = 0;
+                                            simDay[index - 1].spEff = 0;
+                                            simDay[index -1].spPower = spPower * simDay[index - 1].spEff;
                                         } break;
                                         case 6: {
                                             printf("Please enter the custom effectiveness percentage for Daylight intensity (0-100): ");
-                                            scanf("%f", &input);
-                                            simDay[index + 1].spEff = input / 100.0;
+                                            scanf("%f", &cstmInput);
+                                            simDay[index - 1].spEff = cstmInput / 100.0;
+                                            simDay[index -1].spPower = spPower * simDay[index - 1].spEff;
                                         }break;
                                     }
                                     editState = 444;
@@ -491,30 +497,36 @@ int main() {
                                     printf(" 2. Strong (75%% effectiveness) \n");
                                     printf(" 3. Medium (50%% effectiveness) \n");
                                     printf(" 4. Weak (25%% effectiveness) \n");
-                                    printf(" 5. No Waterflow (100%% effectiveness) \n");
+                                    printf(" 5. No Waterflow (0%% effectiveness) \n");
                                     printf(" 6. Custom power level effectiveness \n");
                                     scanf("%d", &input);
-				    clearScreen();
+
                                     switch (input) {
                                         case 1: {
-                                            simDay[index + 1].ggEff = 1;
+                                            simDay[index - 1].ggEff = 1;
+                                            simDay[index -1].ggPower = ggPower * simDay[index - 1].ggEff;
                                         } break;
                                         case 2: {
-                                            simDay[index + 1].ggEff = 0.75;
+                                            simDay[index - 1].ggEff = 0.75;
+                                            simDay[index -1].ggPower = ggPower * simDay[index - 1].ggEff;
                                         } break;
                                         case 3: {
-                                            simDay[index + 1].ggEff = 0.5;
+                                            simDay[index - 1].ggEff = 0.5;
+                                            simDay[index -1].ggPower = ggPower * simDay[index - 1].ggEff;
                                         }
                                         case 4: {
-                                            simDay[index + 1].ggEff = 0.25;
+                                            simDay[index - 1].ggEff = 0.25;
+                                            simDay[index -1].ggPower = ggPower * simDay[index - 1].ggEff;
                                         } break;
                                         case 5: {
-                                            simDay[index + 1].ggEff = 0;
+                                            simDay[index - 1].ggEff = 0;
+                                            simDay[index -1].ggPower = ggPower * simDay[index - 1].ggEff;
                                         } break;
                                         case 6: {
                                            printf("Please enter the custom effectiveness percentage for Waterflow velocity (0-100): ");
-                                           scanf("%f", &input);
-                                           simDay[index + 1].ggEff = input / 100.0;
+                                           scanf("%f", &cstmInput);
+                                           simDay[index - 1].ggEff = cstmInput / 100.0;
+                                           simDay[index -1].ggPower = ggPower * simDay[index - 1].ggEff;
                                         }break;
                                     }
                                     editState = 444;
@@ -525,31 +537,36 @@ int main() {
                                     printf(" 2. Strong (75%% effectiveness) \n");
                                     printf(" 3. Medium (50%% effectiveness) \n");
                                     printf(" 4. Weak (25%% effectiveness) \n");
-                                    printf(" 5. No Windflow (100%% effectiveness) \n");
+                                    printf(" 5. No Windflow (0%% effectiveness) \n");
                                     printf(" 6. Custom Windflow effectiveness \n");
                                     scanf("%d", &input);
-				    clearScreen();
+
                                     switch (input) {
                                         case 1: {
-                                            simDay[index + 1].wnEff = 1;
+                                            simDay[index - 1].wnEff = 1;
+                                            simDay[index -1].wnPower = wnPower * simDay[index - 1].wnEff;
                                         } break;
                                         case 2: {
-                                            simDay[index + 1].wnEff = 0.75;
+                                            simDay[index - 1].wnEff = 0.75;
+                                            simDay[index -1].wnPower = wnPower * simDay[index - 1].wnEff;
                                         } break;
                                         case 3: {
-                                            simDay[index + 1].wnEff = 0.5;
+                                            simDay[index - 1].wnEff = 0.5;
+                                            simDay[index -1].wnPower = wnPower * simDay[index - 1].wnEff;
                                         } break;
                                         case 4: {
-                                            simDay[index + 1].wnEff = 0.25;
-
+                                            simDay[index - 1].wnEff = 0.25;
+                                            simDay[index -1].wnPower = wnPower * simDay[index - 1].wnEff;
                                         } break;
                                         case 5: {
-                                            simDay[index + 1].wnEff = 0;
+                                            simDay[index - 1].wnEff = 0;
+                                            simDay[index -1].wnPower = wnPower * simDay[index - 1].wnEff;
                                         } break;
                                         case 6: {
                                             printf("Please enter the custom effectiveness percentage for Windflow strength (0-100): ");
-                                            scanf("%f", &input);
-                                            simDay[index + 1].wnEff = input / 100.0;
+                                            scanf("%f", &cstmInput);
+                                            simDay[index - 1].wnEff = cstmInput / 100.0;
+                                            simDay[index -1].wnPower = wnPower * simDay[index - 1].wnEff;
                                         }break;
                                     }
                                     editState = 444;
@@ -564,7 +581,7 @@ int main() {
                     case 2 : {
                         printf("Please enter the day to check \n");
                         scanf("%d", &index+1);
-			clearScreen();
+
                         showDay(simDay, index);
                     } break;
                     case 3 : {
