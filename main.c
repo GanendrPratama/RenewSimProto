@@ -82,7 +82,7 @@ void showDay(dayObject *day, int index) {
     printf("-----------------------------------------------------------------\n");
 }
 
-
+//This function clears the screen, makes it cleaner
 void clearScreen() {
   #ifdef _WIN32
     system("cls");
