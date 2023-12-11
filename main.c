@@ -91,7 +91,53 @@ void clearScreen() {
   #endif
 }
 
+void welcome(){
+	int i;//deklarasi variabel integer
+	printf("\t\t\t\t!--- Mulai SIMULATOR menekan Fullscreen lalu ENTER ---!");
+	getchar();//memanggil function getchar
+	system("CLS");//Membersihkan layar
+	Sleep(100);//menjeda program selama 1 detik
+	system("color 9F") ;
+	printf("\n\n\n\n\n\n\n");
+	char a[]= { "\t\t\t\t\t\t\t\t======================================\n"
+				"\t\t\t\t\t\t\t\t|---- Selamat Datang di Simulator ----|\n"
+			    "\t\t\t\t\t\t\t\t|-------- Pembangkit Listrik ---------|\n"
+			    "\t\t\t\t\t\t\t\t|------------ Kelompok 5 -------------|\n"
+			    "\t\t\t\t\t\t\t\t|------- Pemrograman Dasar 01 --------|\n"
+			   	"\t\t\t\t\t\t\t\t======================================\n\n"};	
+	for(i=0;a[i]!=a[283];i++){ 
+		printf("%c",a[i]); 
+		Sleep(5); 
+	}
+	printf("\t\t\t\t\t\t\t\t\t\tLoading... \n\n");
+	Beep(659,400);
+	Sleep(800);//menjeda program selama 0.8 detik
+	for(i=1; i <= 172; i++){
+		printf("%c", 223); // 233 adalah kode KARAKTER beta di dalam ASCII2
+		if(i==60 || i==100)
+			Sleep(500);//menjeda program selama 0.5 detik
+		Sleep(12);
+	}
+	Sleep(1600);//menjeda program selama 1.6 detik
+	system("CLS");//Membersihkan layar	
+}
+//function tampilan keluar
+void keluar(){
+	system("CLS");//Membersihkan layar
+	Sleep(500);//menjeda program selama 0.5 detik	
+	printf("\n\n\n\n\n\n\n");
+	printf("\t\t\t\t\t\t\t\t======================================\n");
+	printf("\t\t\t\t\t\t\t\t|              Thank You             |\n");
+	printf("\t\t\t\t\t\t\t\t======================================\n\n");
+	Sleep(1600);//menjeda program selama 1.6 detik
+	system("CLS");//Membersihkan layar	
+} 
+
+
 int main() {
+	
+	system ("color 9F");
+	welcome();
     //The states of the simulator program
     int activeState = 1;
     int menuState = 0; // menu
@@ -141,8 +187,7 @@ int main() {
     scanf("%f", &needPower);
     printf("Enter the initial money you have in dollars: ");
     scanf("%f", &money);
-	clearScreen();
-	
+
     while (activeState == 1) {
         while (menuState == 1) {
             input = 0;
@@ -192,8 +237,9 @@ int main() {
             printf("|0. Done Input                |\n");
             printf("===============================\n"); 
             printf("Enter your choice:");
+
             scanf("%d", &input);
-            clearScreen();
+        
             switch (input) {
                 case 1: {
                     if (usableArea == 0 || money == 0) {
@@ -224,7 +270,6 @@ int main() {
                             money -= price;
                             spCounter++;
                         }
-                        clearScreen();
                     } break;
                 } break;
                 case 2: {
@@ -255,7 +300,6 @@ int main() {
                             money -= price;
                             ggCounter++;
                         }
-                        clearScreen();
                     } break;
                 } break;
                 case 3: {
@@ -286,7 +330,6 @@ int main() {
                             money -= price;
                             wnCounter++;
                         }
-                        clearScreen();
                     } break;
                 } break;
                 case 4: {
@@ -313,8 +356,8 @@ int main() {
                             removeObj(sp, input-1, &spCounter);
                         }
                     }
-                    clearScreen();
                 } break;
+
                 case 5: {
                     if (ggCounter <= 0) {
                         printf("You have no Geothermal turbine. \n");
@@ -339,8 +382,8 @@ int main() {
                             removeObj(gg, input-1, &ggCounter);
                         }
                     }
-                    clearScreen();
                 } break;
+
                 case 6: {
                     if (wnCounter <= 0) {
                         printf("You have no wind turbine. \n");
@@ -365,8 +408,8 @@ int main() {
                             removeObj(wn, input-1, &wnCounter);
                         }
                     }
-                    clearScreen();
                 } break;
+
                 case 7:{
                     printf("-------------------");
 
@@ -395,7 +438,6 @@ int main() {
                 } break;
             }
         }
-		clearScreen();
         //simulator menu activated
         while (simState == 1) {
             if (totalDay == 0) {
@@ -442,7 +484,7 @@ int main() {
                         while (editState == 1) {
                             printf("Please select the day to edit: ");
                             scanf("%d", &index);
-							clearScreen();
+
                             printf("======================================== \n");
                             printf("Please select which component to edit:   \n");
                             printf(" 1. Daylight intensity.                  \n");
@@ -451,7 +493,7 @@ int main() {
                             printf(" 4. Return to simulation.                \n");
                             printf("======================================== \n");
                             scanf("%d", &input);
-							clearScreen();
+
                             switch (input) {
                                 case 1: {
                                     printf("============================================\n");
@@ -464,7 +506,7 @@ int main() {
                                     printf("| 6. Custom Sunlight effectiveness         |\n");
                                     printf("============================================\n");
                                     scanf("%d", &input); 
-									clearScreen();
+
                                     switch (input) {
                                         case 1: {
                                             simDay[index - 1].spEff = 1;
@@ -516,7 +558,7 @@ int main() {
                                     printf(" 5. No Waterflow (0%% effectiveness) \n");
                                     printf(" 6. Custom power level effectiveness \n");
                                     scanf("%d", &input);
-									clearScreen();
+
                                     switch (input) {
                                         case 1: {
                                             simDay[index - 1].ggEff = 1;
@@ -568,7 +610,7 @@ int main() {
                                     printf(" 5. No Windflow (0%% effectiveness) \n");
                                     printf(" 6. Custom Windflow effectiveness \n");
                                     scanf("%d", &input);
-									clearScreen();
+
                                     switch (input) {
                                         case 1: {
                                             simDay[index - 1].wnEff = 1;
@@ -644,6 +686,9 @@ int main() {
             }
         }
     }
+    
+    keluar();
+    
     free(sp);
     free(gg);
     free(wn);
