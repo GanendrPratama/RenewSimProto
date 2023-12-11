@@ -317,10 +317,10 @@ int main() {
                         printf("Price: ");
                         scanf("%f", &price);
 
-                        if (usableArea - area <= 0) {
+                        if (usableArea - area < 0) {
                             printf("You have no more area to build!\n");
                             break;
-                        } else if (money - price <= 0) {
+                        } else if (money - price < 0) {
                             printf("You cannot afford this generator!\n");
                             break;
                         } else {
