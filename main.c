@@ -141,7 +141,8 @@ int main() {
     scanf("%f", &needPower);
     printf("Enter the initial money you have in dollars: ");
     scanf("%f", &money);
-
+	clearScreen();
+	
     while (activeState == 1) {
         while (menuState == 1) {
             input = 0;
