@@ -465,28 +465,40 @@ int main() {
                                         case 1: {
                                             simDay[index - 1].spEff = 1;
                                             simDay[index -1].spPower = spPower * simDay[index - 1].spEff;
+                                            simDay[index - 1].energyNeeded -= simDay[index - 1 ].spPower + simDay[index - 1].ggPower + simDay[index - 1].wnPower; //energy needed that day
+                                            simDay[index - 1].totalPower = simDay[index -1].spPower + simDay[index - 1].ggPower + simDay[index - 1].wnPower; //total power that day
                                         } break;
                                         case 2: {
                                             simDay[index - 1].spEff = 0.75;
                                             simDay[index -1].spPower = spPower * simDay[index - 1].spEff;
+                                            simDay[index - 1].energyNeeded -= simDay[index - 1 ].spPower + simDay[index - 1].ggPower + simDay[index - 1].wnPower; //energy needed that day
+                                            simDay[index - 1].totalPower = simDay[index -1].spPower + simDay[index - 1].ggPower + simDay[index - 1].wnPower; //total power that day
                                         } break;
                                         case 3: {
                                             simDay[index - 1].spEff = 0.5;
                                             simDay[index -1].spPower = spPower * simDay[index - 1].spEff;
+                                            simDay[index - 1].energyNeeded -= simDay[index - 1 ].spPower + simDay[index - 1].ggPower + simDay[index - 1].wnPower; //energy needed that day
+                                            simDay[index - 1].totalPower = simDay[index -1].spPower + simDay[index - 1].ggPower + simDay[index - 1].wnPower; //total power that day
                                         }
                                         case 4: {
                                             simDay[index - 1].spEff = 0.25;
                                             simDay[index -1].spPower = spPower * simDay[index - 1].spEff;
+                                            simDay[index - 1].energyNeeded -= simDay[index - 1 ].spPower + simDay[index - 1].ggPower + simDay[index - 1].wnPower; //energy needed that day
+                                            simDay[index - 1].totalPower = simDay[index -1].spPower + simDay[index - 1].ggPower + simDay[index - 1].wnPower; //total power that day
                                         } break;
                                         case 5: {
                                             simDay[index - 1].spEff = 0;
                                             simDay[index -1].spPower = spPower * simDay[index - 1].spEff;
+                                            simDay[index - 1].energyNeeded -= simDay[index - 1 ].spPower + simDay[index - 1].ggPower + simDay[index - 1].wnPower; //energy needed that day
+                                            simDay[index - 1].totalPower = simDay[index -1].spPower + simDay[index - 1].ggPower + simDay[index - 1].wnPower; //total power that day
                                         } break;
                                         case 6: {
                                             printf("Please enter the custom effectiveness percentage for Daylight intensity (0-100): ");
                                             scanf("%f", &cstmInput);
                                             simDay[index - 1].spEff = cstmInput / 100.0;
                                             simDay[index -1].spPower = spPower * simDay[index - 1].spEff;
+                                            simDay[index - 1].energyNeeded -= simDay[index - 1 ].spPower + simDay[index - 1].ggPower + simDay[index - 1].wnPower; //energy needed that day
+                                            simDay[index - 1].totalPower = simDay[index -1].spPower + simDay[index - 1].ggPower + simDay[index - 1].wnPower; //total power that day
                                         }break;
                                     }
                                     editState = 444;
@@ -505,28 +517,40 @@ int main() {
                                         case 1: {
                                             simDay[index - 1].ggEff = 1;
                                             simDay[index -1].ggPower = ggPower * simDay[index - 1].ggEff;
+                                            simDay[index - 1].energyNeeded -= simDay[index - 1 ].spPower + simDay[index - 1].ggPower + simDay[index - 1].wnPower; //energy needed that day
+                                            simDay[index - 1].totalPower = simDay[index -1].spPower + simDay[index - 1].ggPower + simDay[index - 1].wnPower; //total power that day
                                         } break;
                                         case 2: {
                                             simDay[index - 1].ggEff = 0.75;
                                             simDay[index -1].ggPower = ggPower * simDay[index - 1].ggEff;
+                                            simDay[index - 1].energyNeeded -= simDay[index - 1 ].spPower + simDay[index - 1].ggPower + simDay[index - 1].wnPower; //energy needed that day
+                                            simDay[index - 1].totalPower = simDay[index -1].spPower + simDay[index - 1].ggPower + simDay[index - 1].wnPower; //total power that day
                                         } break;
                                         case 3: {
                                             simDay[index - 1].ggEff = 0.5;
                                             simDay[index -1].ggPower = ggPower * simDay[index - 1].ggEff;
+                                            simDay[index - 1].energyNeeded -= simDay[index - 1 ].spPower + simDay[index - 1].ggPower + simDay[index - 1].wnPower; //energy needed that day
+                                            simDay[index - 1].totalPower = simDay[index -1].spPower + simDay[index - 1].ggPower + simDay[index - 1].wnPower; //total power that day
                                         }
                                         case 4: {
                                             simDay[index - 1].ggEff = 0.25;
                                             simDay[index -1].ggPower = ggPower * simDay[index - 1].ggEff;
+                                            simDay[index - 1].energyNeeded -= simDay[index - 1 ].spPower + simDay[index - 1].ggPower + simDay[index - 1].wnPower; //energy needed that day
+                                            simDay[index - 1].totalPower = simDay[index -1].spPower + simDay[index - 1].ggPower + simDay[index - 1].wnPower; //total power that day
                                         } break;
                                         case 5: {
                                             simDay[index - 1].ggEff = 0;
                                             simDay[index -1].ggPower = ggPower * simDay[index - 1].ggEff;
+                                            simDay[index - 1].energyNeeded -= simDay[index - 1 ].spPower + simDay[index - 1].ggPower + simDay[index - 1].wnPower; //energy needed that day
+                                            simDay[index - 1].totalPower = simDay[index -1].spPower + simDay[index - 1].ggPower + simDay[index - 1].wnPower; //total power that day
                                         } break;
                                         case 6: {
                                            printf("Please enter the custom effectiveness percentage for Waterflow velocity (0-100): ");
                                            scanf("%f", &cstmInput);
                                            simDay[index - 1].ggEff = cstmInput / 100.0;
                                            simDay[index -1].ggPower = ggPower * simDay[index - 1].ggEff;
+                                           simDay[index - 1].energyNeeded -= simDay[index - 1 ].spPower + simDay[index - 1].ggPower + simDay[index - 1].wnPower; //energy needed that day
+                                            simDay[index - 1].totalPower = simDay[index -1].spPower + simDay[index - 1].ggPower + simDay[index - 1].wnPower; //total power that day
                                         }break;
                                     }
                                     editState = 444;
@@ -544,29 +568,42 @@ int main() {
                                     switch (input) {
                                         case 1: {
                                             simDay[index - 1].wnEff = 1;
-                                            simDay[index -1].wnPower = wnPower * simDay[index - 1].wnEff;
+                                            simDay[index - 1].wnPower = wnPower * simDay[index - 1].wnEff;
+                                            simDay[index - 1].energyNeeded -= simDay[index - 1 ].spPower + simDay[index - 1].ggPower + simDay[index - 1].wnPower; //energy needed that day
+                                            simDay[index - 1].totalPower = simDay[index -1].spPower + simDay[index - 1].ggPower + simDay[index - 1].wnPower; //total power that day
+
                                         } break;
                                         case 2: {
                                             simDay[index - 1].wnEff = 0.75;
                                             simDay[index -1].wnPower = wnPower * simDay[index - 1].wnEff;
+                                            simDay[index - 1].energyNeeded -= simDay[index - 1 ].spPower + simDay[index - 1].ggPower + simDay[index - 1].wnPower; //energy needed that day
+                                            simDay[index - 1].totalPower = simDay[index -1].spPower + simDay[index - 1].ggPower + simDay[index - 1].wnPower; //total power that day
                                         } break;
                                         case 3: {
                                             simDay[index - 1].wnEff = 0.5;
                                             simDay[index -1].wnPower = wnPower * simDay[index - 1].wnEff;
+                                            simDay[index - 1].energyNeeded -= simDay[index - 1 ].spPower + simDay[index - 1].ggPower + simDay[index - 1].wnPower; //energy needed that day
+                                            simDay[index - 1].totalPower = simDay[index -1].spPower + simDay[index - 1].ggPower + simDay[index - 1].wnPower; //total power that day
                                         } break;
                                         case 4: {
                                             simDay[index - 1].wnEff = 0.25;
                                             simDay[index -1].wnPower = wnPower * simDay[index - 1].wnEff;
+                                            simDay[index - 1].energyNeeded -= simDay[index - 1 ].spPower + simDay[index - 1].ggPower + simDay[index - 1].wnPower; //energy needed that day
+                                            simDay[index - 1].totalPower = simDay[index -1].spPower + simDay[index - 1].ggPower + simDay[index - 1].wnPower; //total power that day
                                         } break;
                                         case 5: {
                                             simDay[index - 1].wnEff = 0;
                                             simDay[index -1].wnPower = wnPower * simDay[index - 1].wnEff;
+                                            simDay[index - 1].energyNeeded -= simDay[index - 1 ].spPower + simDay[index - 1].ggPower + simDay[index - 1].wnPower; //energy needed that day
+                                            simDay[index - 1].totalPower = simDay[index -1].spPower + simDay[index - 1].ggPower + simDay[index - 1].wnPower; //total power that day
                                         } break;
                                         case 6: {
                                             printf("Please enter the custom effectiveness percentage for Windflow strength (0-100): ");
                                             scanf("%f", &cstmInput);
                                             simDay[index - 1].wnEff = cstmInput / 100.0;
                                             simDay[index -1].wnPower = wnPower * simDay[index - 1].wnEff;
+                                            simDay[index - 1].energyNeeded -= simDay[index - 1 ].spPower + simDay[index - 1].ggPower + simDay[index - 1].wnPower; //energy needed that day
+                                            simDay[index - 1].totalPower = simDay[index -1].spPower + simDay[index - 1].ggPower + simDay[index - 1].wnPower; //total power that day
                                         }break;
                                     }
                                     editState = 444;
