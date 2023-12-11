@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+// Struktur untuk menyimpan informasi objek (generator)
 typedef struct Object {
     int index;
     char name[100];
@@ -10,6 +11,7 @@ typedef struct Object {
     float price;
 } object;
 
+// Struktur untuk menyimpan informasi per hari dalam simulasi
 typedef struct dayObject {
     int index;
     float energyNeeded;
@@ -22,8 +24,9 @@ typedef struct dayObject {
     float wnEff;
 } dayObject;
 
+// Fungsi-fungsi untuk menampilkan detail dari setiap jenis generator
 void showSolarPanel(object *sp, int index) {
-    printf("\n---------------------------------\n");
+    printf("\n---------------------------------\n"); // Menampilkan detail panel surya
     printf(" \n Solar panel #%d\n", index + 1);
     printf("%s\n", sp[index].name);
     printf("Area: %.2f\n", sp[index].area);
@@ -33,7 +36,7 @@ void showSolarPanel(object *sp, int index) {
 }
 
 void showGeothermalGenerator(object *gg, int index) {
-    printf("\n---------------------------------\n");
+    printf("\n---------------------------------\n"); // Menampilkan detail generator geotermal
     printf(" \n Geothermal Generator #%d\n", index + 1);
     printf("%s\n", gg[index].name);
     printf("Area: %.2f\n", gg[index].area);
@@ -43,7 +46,7 @@ void showGeothermalGenerator(object *gg, int index) {
 }
 
 void showWindTurbine(object *wt, int index){
-    printf("\n---------------------------------\n");
+    printf("\n---------------------------------\n"); // Menampilkan detail turbin angin
     printf(" \n Wind turbine #%d\n", index + 1);
     printf("%s\n",  wt[index].name);
     printf("Area: %.2f\n", wt[index].area);
@@ -52,15 +55,16 @@ void showWindTurbine(object *wt, int index){
     printf("\n---------------------------------\n");
 }
 
+// Fungsi-fungsi untuk menambah dan menghapus objek dari simulasi
 void addObj(object *obj, int index, char name[100], float area, float power, float price) {
-    obj[index].index = index;
+    obj[index].index = index; // Menambahkan objek ke dalam simulasi
     strcpy(obj[index].name, name);
     obj[index].area = area;
     obj[index].power = power;
     obj[index].price = price;
 }
 
-
+// Menghapus objek dari simulasi
 void removeObj(object *obj, int index, int *sum) {
     if (index-1 == *sum) {
         (*sum)--;
@@ -69,9 +73,9 @@ void removeObj(object *obj, int index, int *sum) {
             obj[i] = obj[i+1];
         }
         (*sum)--;
-    }
+    } 
 }
-
+// Fungsi untuk menampilkan detail setiap hari dalam simulasi
 void showDay(dayObject *day, int index) {
     printf("\n Day %d: \n", index + 1);
     printf(" Energy needed                   : %.2f kwd\n", day[index].energyNeeded);
@@ -80,9 +84,9 @@ void showDay(dayObject *day, int index) {
     printf(" Energy from wind turbines       : %.2f kwd\n", day[index].wnPower);
     printf(" Total energy fulfilled          : %.2f kwd\n", day[index].totalPower);
     printf("-----------------------------------------------------------------\n");
-}
+}// Menampilkan detail setiap hari dalam simulasi
 
-//This function clears the screen, makes it cleaner
+// Fungsi untuk membersihkan layar konsol
 void clearScreen() {
   #ifdef _WIN32
     system("cls");
@@ -90,14 +94,14 @@ void clearScreen() {
     system("clear");
   #endif
 }
-
-void welcome(){
+// Fungsi untuk menyambut pengguna
+void welcome(){ // Menampilkan pesan selamat datang dan mengatur tampilan layar awal
 	int i;//deklarasi variabel integer
 	printf("\t\t\t\t\t!--- Mulai SIMULATOR menekan Fullscreen lalu ENTER ---!");
 	getchar();//memanggil function getchar
-	system("CLS");//Membersihkan layar
+	system("CLS");//membersihkan layar
 	Sleep(100);//menjeda program selama 1 detik
-	system("color 9F") ;
+	system("color 9F") ; //me'set' warna background ke warna biru
 	printf("\n\n\n\n\n\n\n");
 	printf("\t\t\t\t\t\t\t\t=======================================\n");
 				printf("\t\t\t\t\t\t\t\t|---- Selamat Datang di Simulator ----|\n");
@@ -106,8 +110,8 @@ void welcome(){
 			    printf("\t\t\t\t\t\t\t\t|------- Pemrograman Dasar 01 --------|\n");
 			   	printf("\t\t\t\t\t\t\t\t=======================================\n\n");
 	
-	printf("Loading... \n\n");
-	Beep(659,400);
+	printf("\t\t\t\t\t\t\t\t\t\tLoading... \n\n");
+	Beep(659,400); //659 adakah frekuensi suara, dan 400 menunjukkan durasi yaitu 0,4 detik
 	Sleep(800);//menjeda program selama 0.8 detik
 	for(i=1; i <= 172; i++){
 		printf("%c", 223); // 233 adalah kode KARAKTER beta di dalam ASCII2
@@ -118,7 +122,7 @@ void welcome(){
 	Sleep(1000);//menjeda program selama 1 detik
 	system("CLS");//Membersihkan layar	
 }
-//function tampilan keluar
+//function untuk menampilkan pesan keluar
 void keluar(){
 	system("CLS");//Membersihkan layar
 	Sleep(500);//menjeda program selama 0.5 detik	
@@ -129,16 +133,16 @@ void keluar(){
 	Sleep(1600);//menjeda program selama 1.6 detik
 	system("CLS");//Membersihkan layar	
 }
-
+// Fungsi utama program
 int main() {
 	system ("color 9F");
 	welcome();
-    //The states of the simulator program
+    // State dari program simulator
     int activeState = 1;
     int menuState = 0; // menu
     int simState = 0; // simulator
     int editState = 0; //edit state
-
+	// Variabel-variabel untuk menyimpan informasi energi dan generator
     float usableArea; // Initial usable area
     float totalArea = 0; // Total area covered by added components
     float needPower; //Power needed per hour in kilowatt per hour
@@ -149,28 +153,28 @@ int main() {
     object *sp = calloc(100, sizeof(object));
     object *gg = calloc(100, sizeof(object));
     object *wn = calloc(100, sizeof(object));
-
+	// Counter untuk setiap jenis generator
     int spCounter = 0;
     int ggCounter = 0;
     int wnCounter = 0;
-
+	// Total daya yang dihasilkan oleh masing-masing jenis generator
     float spPower = 0;
     float ggPower = 0;
     float wnPower = 0;
     totalPower = spPower + ggPower + wnPower;
-
+	// Efisiensi masing-masing jenis generator
     float spEff = 1.0;
     float ggEff = 1.0;
     float wnEff = 1.0;
 
-    //variables to temporarily store fields to be inserted
+    //variabel untuk sementara menyimpan bidang yang akan dimasukkan
     int input = 0;
     int index = 0;
     char name[100];
     float area;
     float power; // Kilowatt per hour
     float price; // in dollars
-
+	// Variabel untuk menyimpan total hari, input kustom, dan struktur dayObject
     int totalDay = 0;
     float cstmInput = 0.0;
     dayObject *simDay = calloc(1, sizeof(dayObject));
@@ -462,7 +466,7 @@ int main() {
                     // Update the totalPower for the day
                     simDay[i].totalPower = simDay[i].spPower + simDay[i].ggPower + simDay[i].wnPower;
                 }
-            } else {
+            } else {// Menampilkan hari-hari yang telah disimulasikan
                 for (int i = 0; i < totalDay; i++) {
                     showDay(simDay,i);
                 }
