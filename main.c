@@ -113,7 +113,7 @@ void welcome(){ // Menampilkan pesan selamat datang dan mengatur tampilan layar 
 	printf("\t\t\t\t\t\t\t\t\t\tLoading... \n\n");
 	Beep(659,400); //659 adakah frekuensi suara, dan 400 menunjukkan durasi yaitu 0,4 detik
 	Sleep(800);//menjeda program selama 0.8 detik
-	for(i=1; i <= 172; i++){
+	for(i=1; i <= 156; i++){
 		printf("%c", 223); // 233 adalah kode KARAKTER beta di dalam ASCII2
 		if(i==60 || i==100)
 			Sleep(500);//menjeda program selama 0.5 detik
